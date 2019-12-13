@@ -2,14 +2,18 @@ import XCTest
 @testable import CLMooncellData
 
 final class CLMooncellDataTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(CLMooncellData().text, "Hello, World!")
+    
+    func testHomeData() {
+        let expectation = XCTestExpectation(description: "homeSourceData arrived")
+        let md = CLMooncellData()
+        md.homeData { data in
+            XCTAssertNotNil(data.value)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 10)
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testHomeData", testHomeData),
     ]
 }
