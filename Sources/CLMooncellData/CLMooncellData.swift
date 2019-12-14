@@ -5,22 +5,23 @@ open class CLMooncellData {
     
     public init() {}
     
-    public func homeData(completionHandler: @escaping (DataResponse<MCHomeSourceData, Error>) -> Void) {
+    public func homeData(completionHandler: @escaping (DataResponse<[MCHomeData], Error>) -> Void) {
         AF.requestMooncell(.home).responseData { responseData in
-            let res = responseData.tryMap { data -> MCHomeSourceData in
+            let res = responseData.tryMap { data -> [MCHomeData] in
                 let extractor = try HomeME(data)
                 let cn = MCHomeData(
+                    sourceType: .CN,
                     events: extractor.extractEvents(target: .CN),
                     summons: extractor.extractSummons(target: .CN),
                     recentlyUpdatedData: extractor.extractNewData(target: .CN),
                     masterMissions: [extractor.extractMasterMission(target: .CN), extractor.extractMasterMission(target: .nextCN)])
                 let jp = MCHomeData(
+                    sourceType: .JP,
                     events: extractor.extractEvents(target: .JP),
                     summons: extractor.extractSummons(target: .JP),
                     recentlyUpdatedData: extractor.extractNewData(target: .JP),
                     masterMissions: [extractor.extractMasterMission(target: .JP)])
-                let homeSourceData = MCHomeSourceData(cn: cn, jp: jp)
-                return homeSourceData
+                return [cn, jp]
             }
             completionHandler(res)
         }

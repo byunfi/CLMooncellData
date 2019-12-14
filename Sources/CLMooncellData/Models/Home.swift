@@ -25,15 +25,11 @@ public struct MCMasterMission {
 }
 
 public struct MCHomeData {
+    public let sourceType: MCHomeSourceType
     public let events: [MCHomeBox]
     public let summons: [MCHomeBox]
     public let recentlyUpdatedData: [MCHomeBox]
     public let masterMissions: [MCMasterMission]
-}
-
-public struct MCHomeSourceData {
-    public let cn: MCHomeData
-    public let jp: MCHomeData
 }
 
 public struct MCEventListItem {
@@ -44,4 +40,8 @@ public struct MCEventListItem {
     public let imageSrc: String
     public let type: String
     public let officialHref: String?
+}
+
+public enum MCHomeSourceType: String {
+    case CN, JP
 }
